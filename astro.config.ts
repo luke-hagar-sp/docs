@@ -41,6 +41,10 @@ export default defineConfig({
           autogenerate: { directory: "core-concepts" },
         },
         {
+          label: "Guides",
+          autogenerate: { directory: "guides" },
+        },
+        {
           label: "Service Methods",
           autogenerate: { directory: "service-methods" },
           collapsed: true,
