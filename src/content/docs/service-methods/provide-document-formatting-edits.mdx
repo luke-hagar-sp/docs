@@ -1,0 +1,28 @@
+---
+title: provideDocumentFormattingEdits
+description: Provide edits to format the entire document.
+---
+
+## Overview
+Called for full-document formatting. Return `TextEdit[]` that transform the document to a formatted version.
+
+## Signature
+`(document: TextDocument, options: FormattingOptions, token: CancellationToken) => TextEdit[] | Promise<TextEdit[]>`
+
+## Best practices
+- Keep edits minimal; prefer fewer larger edits over many tiny ones.
+- Respect user options (tabSize, insertSpaces).
+- Use stable formatter (Prettier/sass-formatter/prettyhtml) when possible.
+
+## Example
+```ts
+provideDocumentFormattingEdits(doc, options) {
+  const formatted = format(doc.getText(), options);
+  return [{ range: fullRange(doc), newText: formatted }];
+}
+```
+
+## Troubleshooting
+- Cursor jumps: produce deterministic edits; avoid overlapping ranges.
+
+

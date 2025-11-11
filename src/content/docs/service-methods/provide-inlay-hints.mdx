@@ -1,0 +1,26 @@
+---
+title: provideInlayHints
+description: Provide inlay hints (inline annotations) for a document.
+---
+
+## Overview
+Return `InlayHint[]` to show parameter names, inferred types, or other inline hints.
+
+## Signature
+`(document: TextDocument, token: CancellationToken) => InlayHint[] | Promise<InlayHint[]>`
+
+## Best practices
+- Keep hints subtle and relevant; avoid clutter.
+- Provide `tooltip` for extra context.
+
+## Example
+```ts
+provideInlayHints(doc) {
+  return computeHints(doc);
+}
+```
+
+## Related
+- [resolveInlayHint](/service-methods/resolve-inlay-hint)
+
+

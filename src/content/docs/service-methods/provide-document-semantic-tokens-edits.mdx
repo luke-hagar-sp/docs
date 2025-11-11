@@ -1,0 +1,16 @@
+---
+title: provideDocumentSemanticTokensEdits
+description: Provide incremental semantic token edits based on a previous result.
+---
+
+## Overview
+Return either a full token set or an edits structure to update the client efficiently.
+
+## Signature
+`(document: TextDocument, previousResultId: string, token: CancellationToken) => SemanticTokens | SemanticTokensEdits | Promise<SemanticTokens | SemanticTokensEdits>`
+
+## Best practices
+- Track `resultId` to compute diffs across snapshots.
+- Fall back to full result if diff is too large or state is invalid.
+
+

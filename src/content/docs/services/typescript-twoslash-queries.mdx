@@ -1,0 +1,41 @@
+---
+title: volar-service-typescript-twoslash-queries
+description: Integrate TypeScript Twoslash queries into Volar for inline type exploration.
+---
+
+### What it does
+Enables TypeScript Twoslash queries (e.g. `// ^?`) to inspect inferred types and symbols inline.
+
+### How it works
+Parses special Twoslash comment queries in TS/JS and returns results via service hooks for display in editors.
+
+### Why use it
+- Great for docs, learning, and debugging types inside the editor.
+
+### Install
+
+```bash
+npm i volar-service-typescript-twoslash-queries
+```
+
+### Usage
+
+```ts
+import { create as createTsTwoslash } from 'volar-service-typescript-twoslash-queries';
+
+getServicePlugins() {
+  return [
+    createTsTwoslash(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements: hooks to evaluate Twoslash queries and surface results (editor integrations may present them as hovers or decorations).
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/typescript-twoslash-queries`
+- Twoslash: `https://www.typescriptlang.org/dev/twoslash/`
+
+

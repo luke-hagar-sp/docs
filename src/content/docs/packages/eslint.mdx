@@ -1,0 +1,46 @@
+---
+title: "@volar/eslint"
+description: Utilities to integrate ESLint diagnostics and fixes with Volar-based tooling.
+---
+
+### Overview
+`@volar/eslint` offers helpers to run ESLint in tandem with Volar’s document model and surface results via LSP-like diagnostics and code actions. It’s useful when your language server should report ESLint findings alongside other language features.
+
+### Install
+
+```bash
+npm i @volar/eslint eslint
+```
+
+### Usage
+Use from a Volar service/plugin to execute ESLint against current snapshots and map results to diagnostics:
+
+```ts
+import { createEslintRunner } from '@volar/eslint';
+
+const run = await createEslintRunner({
+  cwd: process.cwd(),
+  eslintOptions: {}, // your ESLint CLIEngine/ESLint options
+});
+
+const results = await run.lintText(text, filePath);
+// Convert to LSP diagnostics and return from your service
+```
+
+### How it works
+- Adapts ESLint to Volar’s snapshot model
+- Helps convert ESLint messages to LSP diagnostics and code actions
+- Supports partial/lazy execution to keep keystroke latency low
+
+### API summary
+- `createEslintRunner({ cwd?, eslintOptions? })`
+- Utilities to map ESLint results to diagnostics/actions
+
+### Best practices
+- Cache ESLint instances; avoid reloading configs on every keystroke
+- Limit lint-on-type to small files or throttle for responsiveness
+
+### Related
+- [volar-service-eslint](/services/eslint) (ready-made service), [@volar/language-service](/packages/language-service)
+
+

@@ -1,0 +1,71 @@
+---
+title: Service Definition
+description: A list of available services in VolarJS and how to use them.
+---
+
+Services are the building blocks of Volar language servers. They are responsible for providing all the features you'd expect in a language server, completions, diagnostics, hover information, you name it.
+
+While services are technically not tied to individual languages, they are often designed to work with a specific language or file type, including [embedded languages](/core-concepts/embedded-languages).
+
+For example, if you were to implement a Volar language server for HTML, you would likely end up with three different services, one for general HTML support, one for CSS support and one for JavaScript support, the latter two being used for `<style>` and `<script>` tags respectively.
+
+## Shape of a service
+
+A service is a JavaScript object, whose only required property is a `create` method. The `create` method is called when the service is initialized, and it should return an object with methods that implement the various features of the service.
+
+These methods are called by the Volar language server when it needs to perform a specific task, such as providing completions or diagnostics. Those methods map almost exactly to the [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) (LSP) requests, for instance `textDocument/completion` becomes `provideCompletionItems`, `textDocument/hover` becomes `provideHover`, etc.
+
+```ts title="service.ts"
+export const service = {
+	name: 'my-service', // The name of the service, this is used to identify the service in the logs and in Volar Labs
+	create(context): ServicePluginInstance {
+		return {
+			provideHover(document, position, token) {
+				// Implement hover support here
+			},
+			// More methods...
+		};
+	},
+} satisfies ServicePlugin;
+```
+
+## Using a service
+
+When initializing the language server, the list of services to use is passed as an option to the `initialize` method.
+
+```ts title="server.ts"
+import {
+  createConnection,
+  createServer,
+  createSimpleProjectProviderFactory,
+} from "@volar/language-server/node";
+import { service } from "./service";
+
+const connection = createConnection();
+const server = createServer(connection);
+
+connection.listen();
+
+connection.onInitialize((params) => {
+  return server.initialize(params, createSimpleProjectProviderFactory(), {
+    // ...
+    getServicePlugins() {
+      return [service];
+    },
+  });
+});
+
+connection.onInitialized(() => {
+  server.initialized();
+});
+```
+
+## First-party services
+
+The Volar team maintains a number of first-party services that are ready for use in your Volar language servers. These services should cover the vast majority of common use cases, such as providing completions, diagnostics, hover information, etc for HTML, CSS, JSON, JavaScript and more, or integrating with well-known tools like Emmett, Prettier, etc.
+
+To see a list of all first-party services, see the [volarjs/services](https://github.com/volarjs/services) repository.
+
+## Methods
+
+For detailed per-method docs, see the dedicated section: [Service Methods](/service-methods/).

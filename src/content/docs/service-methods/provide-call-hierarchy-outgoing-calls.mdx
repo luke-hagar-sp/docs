@@ -1,0 +1,19 @@
+---
+title: provideCallHierarchyOutgoingCalls
+description: Provide outgoing calls from a call hierarchy item.
+---
+
+## Overview
+Return `CallHierarchyOutgoingCall[]` showing what a symbol calls as a caller.
+
+## Signature
+`(document: TextDocument, position: Position, token: CancellationToken) => CallHierarchyOutgoingCall[] | Promise<CallHierarchyOutgoingCall[]>`
+
+## Example
+```ts
+provideCallHierarchyOutgoingCalls(doc, pos) {
+  return findOutgoingCalls(doc, pos);
+}
+```
+
+

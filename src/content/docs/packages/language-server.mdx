@@ -1,0 +1,64 @@
+---
+title: "@volar/language-server"
+description: Language Server Protocol (LSP) server built on top of Volar’s core and service layers.
+---
+
+### Overview
+`@volar/language-server` adapts the Volar language-service to the Language Server Protocol. It handles client connections, initialization, workspace folders, and routes LSP requests to your configured services.
+
+Use this to:
+- Ship a complete LSP server for your language/tooling
+- Integrate with VS Code, Neovim, Eclipse Theia, etc.
+
+### How it works
+- Provides `createServer` and server wiring (connection, initialize, lifecycle)
+- Accepts a project provider factory and `getServicePlugins` callback
+- Translates LSP requests/responses to Volar service calls
+
+### Install
+
+```bash
+npm i @volar/language-server
+```
+
+### Usage
+
+```ts
+import {
+  createConnection,
+  createServer,
+  createSimpleProjectProviderFactory,
+} from '@volar/language-server/node';
+import { create as createHtml } from 'volar-service-html';
+
+const connection = createConnection();
+const server = createServer(connection);
+
+connection.listen();
+
+connection.onInitialize((params) => {
+  return server.initialize(params, createSimpleProjectProviderFactory(), {
+    getServicePlugins() {
+      return [createHtml()];
+    },
+  });
+});
+
+connection.onInitialized(() => {
+  server.initialized();
+});
+```
+
+### API summary
+- `createServer(connection)`
+- `initialize(params, createProjectProviderFactory, { getServicePlugins })`
+- Project provider factories (simple/advanced)
+
+### Best practices
+- Keep `getServicePlugins` deterministic; avoid side effects on every call
+- Prefer the “simple” factory first; switch to advanced when you need custom project graph/tsconfig handling
+
+### Related
+- [@volar/kit](/packages/kit), [@volar/vscode](/packages/vscode)
+
+

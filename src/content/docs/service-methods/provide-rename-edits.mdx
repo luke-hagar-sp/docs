@@ -1,0 +1,30 @@
+---
+title: provideRenameEdits
+description: Provide a workspace edit to rename a symbol.
+---
+
+## Overview
+Called for `textDocument/rename`. Compute all edits needed to rename the symbol at position to `newName`.
+
+## Signature
+`(document: TextDocument, position: Position, newName: string, token: CancellationToken) => WorkspaceEdit | Promise<WorkspaceEdit>`
+
+## Best practices
+- Validate `newName` (identifiers only) and provide errors early.
+- Use symbol references; include declaration if appropriate.
+- Map edits across source/virtual files; dedupe.
+
+## Example
+```ts
+provideRenameEdits(doc, pos, newName) {
+  const refs = findRefs(doc, pos, { includeDecl: true });
+  const changes = groupByUri(refs, r => ({ range: r.range, newText: newName }));
+  return { changes };
+}
+```
+
+## Troubleshooting
+- Partial rename: ensure refs include embedded regions.
+- Collisions: validate the target scope before applying edits.
+
+

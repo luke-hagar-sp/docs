@@ -1,0 +1,35 @@
+---
+title: resolveCompletionItem
+description: Enrich a selected completion item with additional data.
+---
+
+## Overview
+Called when a user selects a completion item. Perform expensive lookups (documentation, edits, imports) on demand.
+
+## Signature
+`(item: CompletionItem, token: CancellationToken) => CompletionItem | Promise<CompletionItem>`
+
+## Best practices
+- Keep `provideCompletionItems` lightweight; move cost here.
+- Use `data` field on items to identify what to resolve.
+- Respect cancellation; return early if `token.isCancellationRequested`.
+
+## Example
+```ts
+resolveCompletionItem(item, token) {
+  if (token.isCancellationRequested) return item;
+  if (item.data?.symbolId) {
+    item.detail = lookupDetail(item.data.symbolId);
+    item.documentation = getDocs(item.data.symbolId);
+  }
+  return item;
+}
+```
+
+## Troubleshooting
+- Missing docs: ensure `data` is carried from `provideCompletionItems`.
+- Jitter: avoid network requests on hot paths; cache by snapshot version.
+
+## Related
+- [provideCompletionItems](/service-methods/provide-completion-items)
+

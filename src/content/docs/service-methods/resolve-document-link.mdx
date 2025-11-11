@@ -1,0 +1,22 @@
+---
+title: resolveDocumentLink
+description: Resolve the target for a specific document link.
+---
+
+## Overview
+Called to compute `DocumentLink.target` lazily. Useful when link resolution requires I/O or project graph lookups.
+
+## Signature
+`(link: DocumentLink, token: CancellationToken) => DocumentLink | Promise<DocumentLink>`
+
+## Example
+```ts
+resolveDocumentLink(link) {
+  if (link.data?.href) {
+    link.target = toUri(link.data.href);
+  }
+  return link;
+}
+```
+
+

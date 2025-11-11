@@ -1,0 +1,43 @@
+---
+title: "@volar/typescript"
+description: Building blocks to integrate the TypeScript Language Service with Volar core.
+---
+
+### Overview
+`@volar/typescript` contains adapters and helpers that connect Volar’s virtual files and source maps to the TypeScript Language Service (TS LS). Use it when authoring TS-powered services or servers.
+
+### Install
+
+```bash
+npm i @volar/typescript typescript
+```
+
+### Usage
+
+```ts
+import * as ts from 'typescript';
+import { createTypeScriptProject } from '@volar/typescript';
+
+const project = createTypeScriptProject({
+  ts,
+  tsconfigPath: './tsconfig.json',
+  // supply host hooks that read from Volar’s virtual file system, if needed
+});
+```
+
+### How it works
+- Creates and manages a TS Program/Language Service backed by your documents
+- Knows how to expose TS features through Volar’s service abstractions
+
+### API summary
+- Project builders and host factories
+- Helpers to query TS LS for completions/diagnostics/edits and map results back
+
+### Performance
+- Reuse TS Programs; update incrementally
+- Use Volar snapshots for stable reads; avoid re-parsing the same text
+
+### Related
+- [volar-service-typescript](/services/typescript), [@volar/typescript-language-service](/packages/typescript-language-service)
+
+

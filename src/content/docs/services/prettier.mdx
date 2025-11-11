@@ -1,0 +1,56 @@
+---
+title: volar-service-prettier
+description: Integrate Prettier as a formatter within Volar.
+---
+
+### What it does
+Adds Prettier-based formatting for supported languages.
+
+### How it works
+Bridges Prettier through Volar’s formatting hooks, with optional language-specific controls and a resolver for Prettier options.
+
+### Why use it
+- Enforce consistent code style using your existing Prettier config.
+
+### Install
+
+```bash
+npm i volar-service-prettier
+```
+
+### Usage
+
+```ts
+import { create as createPrettier } from 'volar-service-prettier';
+
+getServicePlugins() {
+  return [
+    createPrettier(
+      {
+        languages: ['html', 'css', 'scss', 'typescript', 'javascript'],
+        html: { breakContentsFromTags: true },
+        ignoreIdeOptions: true,
+      },
+      // Provide Prettier options programmatically (optional).
+      () => ({
+        // ...your Prettier config here...
+      })
+    ),
+  ];
+}
+```
+
+### API
+- Export: `create(options?, resolvePrettierOptions?) => ServicePlugin`
+- Implements: provideDocumentFormattingEdits, provideDocumentRangeFormattingEdits, provideOnTypeFormattingEdits.
+- Options highlights:
+  - `languages?: string[]`
+  - `html?: { breakContentsFromTags?: boolean }`
+  - `ignoreIdeOptions?: boolean`
+  - `resolvePrettierOptions?: () => PrettierOptions`
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/prettier`
+- Prettier: `https://prettier.io/`
+
+

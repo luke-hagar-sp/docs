@@ -1,0 +1,28 @@
+---
+title: provideDefinition
+description: Provide go-to-definition for a symbol at a position.
+---
+
+## Overview
+Called for `textDocument/definition`. Return a location or multiple candidate locations for the symbol under the cursor.
+
+## Signature
+`(document: TextDocument, position: Position, token: CancellationToken) => Location | Location[] | Promise<Location | Location[]>`
+
+## Best practices
+- Map through source maps if definitions live in generated/embedded files.
+- Deduplicate overlapping locations.
+- Prefer precise ranges on identifiers.
+
+## Example
+```ts
+provideDefinition(document, position) {
+  const def = findDefinition(document, position);
+  return def ? { uri: def.uri, range: def.range } : undefined;
+}
+```
+
+## Troubleshooting
+- Jumps to wrong file: verify mapping direction and URIs.
+- Returns too many locations: filter by symbol kind or scope.
+

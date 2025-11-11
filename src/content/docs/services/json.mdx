@@ -1,0 +1,41 @@
+---
+title: volar-service-json
+description: Integrate vscode-json-languageservice into Volar.
+---
+
+### What it does
+Provides JSON features with schema-aware validation, completions, hovers, formatting, and symbols for `.json` and embedded JSON.
+
+### How it works
+Wraps `vscode-json-languageservice` to respond to Volar service hooks, optionally leveraging JSON Schemas discovered by the upstream LS.
+
+### Why use it
+- First-class JSON authoring and schema support in embedded contexts and plain `.json`.
+
+### Install
+
+```bash
+npm i volar-service-json
+```
+
+### Usage
+
+```ts
+import { create as createJson } from 'volar-service-json';
+
+getServicePlugins() {
+  return [
+    createJson(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements (via JSON LS): provideCompletionItems/resolveCompletionItem, provideHover, provideDocumentSymbols, provideDocumentLinks, provideDocumentFormattingEdits/Range, provideFoldingRanges, provideSelectionRanges, diagnostics (schema-based).
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/json`
+- Upstream LS: `https://github.com/microsoft/vscode-json-languageservice`
+
+

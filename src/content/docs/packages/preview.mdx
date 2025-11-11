@@ -1,0 +1,38 @@
+---
+title: "@volar/preview"
+description: Lightweight playground preview harness for running Volar-powered editors in the browser.
+---
+
+### Overview
+`@volar/preview` provides utilities to bootstrap interactive previews/playgrounds that use Volar language services under the hood. It’s useful for documentation sites and demos.
+
+### Install
+
+```bash
+npm i @volar/preview
+```
+
+### Usage
+
+```ts
+import { createPreviewApp } from '@volar/preview';
+import { create as createHtml } from 'volar-service-html';
+
+const app = await createPreviewApp({
+  files: {
+    '/index.html': '<div>Hello</div>',
+  },
+  getServicePlugins: () => [createHtml()],
+});
+
+app.mount('#app');
+```
+
+### Notes
+- Often paired with `@volar/monaco` to provide the editor part
+- Provides simple file system abstractions and wiring for demos
+
+### Related
+- [@volar/monaco](/packages/monaco), [@volar/cdn](/packages/cdn), [@volar/jsdelivr](/packages/jsdelivr)
+
+

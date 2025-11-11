@@ -1,0 +1,26 @@
+---
+title: provideDocumentLinks
+description: Provide links present in the document (e.g., imports, URLs).
+---
+
+## Overview
+Return `DocumentLink[]` for navigable resources and optionally a resolver to compute targets lazily.
+
+## Signature
+`(document: TextDocument, token: CancellationToken) => DocumentLink[] | Promise<DocumentLink[]>`
+
+## Best practices
+- Keep link ranges precise; avoid including quotes.
+- Use `data` to postpone expensive resolution.
+
+## Example
+```ts
+provideDocumentLinks(doc) {
+  return findLinks(doc).map(l => ({ range: l.range, data: { href: l.href } }));
+}
+```
+
+## Related
+- [resolveDocumentLink](/service-methods/resolve-document-link)
+
+

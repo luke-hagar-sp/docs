@@ -1,0 +1,65 @@
+---
+title: "@volar/language-core"
+description: Core primitives for building embedded-language tooling. Documents, snapshots, source maps, and plugin composition.
+---
+
+### Overview
+`@volar/language-core` provides the fundamental data structures and algorithms that power Volar. It models source files, virtual/embedded files, and mappings between them so higher-level services (TypeScript, CSS, HTML, etc.) can reason about complex, multi-language documents.
+
+Use this when you are:
+- Building a language plugin for an embedded language
+- Creating virtual files that represent transformed/compiled output
+- Mapping positions/ranges across source and generated code
+
+### How it works
+The core exposes:
+- Snapshot documents to read stable versions of text
+- Source maps and ranges to translate positions across files
+- File registries and plugin composition helpers
+- Normalized capabilities (completion, hover, diagnostics, etc.) to route requests through plugins
+
+This layer does not speak LSP or editor protocols; it focuses on correctness and performance for embedded-language modeling.
+
+### Install
+
+```bash
+npm i @volar/language-core
+```
+
+### Usage
+Create files and source maps, then pass them to higher layers:
+
+```ts
+import { createLanguage } from '@volar/language-core';
+import { createSnapshotDocument } from '@volar/snapshot-document';
+import { createSourceMap } from '@volar/source-map';
+
+const language = createLanguage();
+const doc = createSnapshotDocument('file:///app.vue', '<template>Hello</template>');
+
+const htmlVirtualCode = '<div>Hello</div>';
+const htmlMap = createSourceMap({
+  sourceDocument: doc,
+  generatedDocumentText: htmlVirtualCode,
+  // add segments that map source ranges to generated ranges...
+});
+
+language.files.registerVirtual('file:///app.vue.html', htmlVirtualCode, htmlMap);
+```
+
+### API summary
+- File and project abstractions
+- Document snapshots and change tracking
+- Source maps and range translation
+- Plugin composition types and helpers
+
+### Best practices
+- Normalize URIs early; keep a consistent scheme (`file://`, `inmemory://`, etc.)
+- Avoid recomputing source maps on every keystroke; cache per snapshot/version
+- Model transformations as isolated “virtual” files with explicit maps
+
+### Related
+- [@volar/source-map](/packages/source-map), [@volar/snapshot-document](/packages/snapshot-document), [@volar/transforms](/packages/transforms)
+- Higher layers: [@volar/language-service](/packages/language-service), [@volar/language-server](/packages/language-server)
+
+

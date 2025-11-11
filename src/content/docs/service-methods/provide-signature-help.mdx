@@ -1,0 +1,32 @@
+---
+title: provideSignatureHelp
+description: Provide parameter hints and active signature at a position.
+---
+
+## Overview
+Called for `textDocument/signatureHelp`. Show function overloads and active parameter while typing arguments.
+
+## Signature
+`(document: TextDocument, position: Position, token: CancellationToken) => SignatureHelp | Promise<SignatureHelp>`
+
+## Best practices
+- Compute activeSignature/activeParameter accurately.
+- Handle partial/invalid syntax gracefully.
+- Debounce heavy symbol lookups, cache per snapshot.
+
+## Example
+```ts
+provideSignatureHelp(doc, pos) {
+  const call = findCallExpression(doc, pos);
+  if (!call) return;
+  return {
+    signatures: call.overloads.map(o => ({ label: o.label, parameters: o.params.map(p => ({ label: p })) })),
+    activeSignature: call.activeIndex,
+    activeParameter: call.argIndex,
+  };
+}
+```
+
+## Troubleshooting
+- Wrong active parameter: double-check comma/paren scanning rules.
+

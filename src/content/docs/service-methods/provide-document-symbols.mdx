@@ -1,0 +1,26 @@
+---
+title: provideDocumentSymbols
+description: Provide outline symbols for the current document.
+---
+
+## Overview
+Called for `textDocument/documentSymbol`. Return either `SymbolInformation[]` or hierarchical `DocumentSymbol[]`.
+
+## Signature
+`(document: TextDocument, token: CancellationToken) => SymbolInformation[] | Promise<SymbolInformation[]>`
+
+## Best practices
+- Provide hierarchical symbols when possible (better outline UX).
+- Use consistent symbol kinds and ranges.
+
+## Example
+```ts
+provideDocumentSymbols(doc) {
+  const symbols = parseSymbols(doc);
+  return symbols;
+}
+```
+
+## Troubleshooting
+- Empty outline: ensure parser runs on latest snapshot text.
+

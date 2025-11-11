@@ -1,0 +1,41 @@
+---
+title: volar-service-yaml
+description: Integrate yaml-language-server into Volar.
+---
+
+### What it does
+Provides YAML features including schema-based validation, completions, hovers, formatting, and symbols for `.yaml`/`.yml`.
+
+### How it works
+Embeds `yaml-language-server` through Volar’s service interface to serve LSP-like functionality for YAML.
+
+### Why use it
+- YAML authoring with JSON Schema support inside embedded-language projects.
+
+### Install
+
+```bash
+npm i volar-service-yaml
+```
+
+### Usage
+
+```ts
+import { create as createYaml } from 'volar-service-yaml';
+
+getServicePlugins() {
+  return [
+    createYaml(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements (via YAML LS): provideCompletionItems/resolveCompletionItem, provideHover, provideDocumentSymbols, provideDocumentLinks, provideDocumentFormattingEdits/Range, provideFoldingRanges, diagnostics (schema-aware).
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/yaml`
+- Upstream LS: `https://github.com/redhat-developer/yaml-language-server`
+
+

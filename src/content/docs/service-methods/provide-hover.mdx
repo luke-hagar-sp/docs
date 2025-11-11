@@ -1,0 +1,34 @@
+---
+title: provideHover
+description: Provide hover information at a given position.
+---
+
+## Overview
+Called for `textDocument/hover`. Return concise, high-signal information (types, docs, examples) for the symbol at the position.
+
+## Signature
+`(document: TextDocument, position: Position, token: CancellationToken) => Hover | Promise<Hover>`
+
+## Best practices
+- Keep hover brief; prefer markdown with code fences.
+- Map source→virtual positions where embedded.
+- Respect cancellation for responsiveness.
+
+## Example
+```ts
+provideHover(document, position) {
+  const symbol = findSymbol(document, position);
+  if (!symbol) return;
+  return {
+    contents: {
+      kind: 'markdown',
+      value: `**${symbol.name}**\\n\\n\`\`\`ts\\n${symbol.type}\\n\`\`\``
+    }
+  };
+}
+```
+
+## Troubleshooting
+- Wrong location: verify mappings and offset calculations.
+- Overly verbose: trim or link out to detailed docs.
+

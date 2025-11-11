@@ -1,0 +1,49 @@
+---
+title: volar-service-css
+description: Integrate vscode-css-languageservice into Volar.
+---
+
+### What it does
+Provides CSS language features (diagnostics, completions, hovers, document colors, color presentations, formatting, symbols, folding/selection ranges) for `style` blocks and standalone CSS files in embedded projects.
+
+### How it works
+Wraps `vscode-css-languageservice` behind Volar’s Service Plugin interface. The service analyzes CSS documents (including virtual embedded CSS) and responds to LSP-style hooks.
+
+### Why use it
+- Add first-class CSS editing features to any language server built on Volar.
+- Works for embedded CSS (e.g. within SFCs or HTML) and plain `.css` files.
+
+### Install
+
+```bash
+npm i volar-service-css
+```
+
+### Usage
+
+```ts
+import { create as createCss } from 'volar-service-css';
+
+getServicePlugins() {
+  return [
+    createCss(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements (via underlying CSS LS):
+  - provideCompletionItems, resolveCompletionItem
+  - provideHover
+  - provideDocumentSymbols
+  - provideDocumentColors, provideColorPresentations
+  - provideDocumentFormattingEdits, provideDocumentRangeFormattingEdits, provideOnTypeFormattingEdits
+  - provideFoldingRanges, provideSelectionRanges
+  - provideDocumentLinks
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/css`
+- Upstream LS: `https://github.com/microsoft/vscode-css-languageservice`
+
+

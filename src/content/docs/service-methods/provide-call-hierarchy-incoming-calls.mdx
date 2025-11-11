@@ -1,0 +1,19 @@
+---
+title: provideCallHierarchyIncomingCalls
+description: Provide incoming calls to a call hierarchy item.
+---
+
+## Overview
+Return `CallHierarchyIncomingCall[]` showing where a symbol is referenced as a callee.
+
+## Signature
+`(document: TextDocument, position: Position, token: CancellationToken) => CallHierarchyIncomingCall[] | Promise<CallHierarchyIncomingCall[]>`
+
+## Example
+```ts
+provideCallHierarchyIncomingCalls(doc, pos) {
+  return findIncomingCalls(doc, pos);
+}
+```
+
+

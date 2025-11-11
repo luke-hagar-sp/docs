@@ -1,0 +1,25 @@
+---
+title: resolveCodeLens
+description: Compute the command for a specific code lens.
+---
+
+## Overview
+Called for `codeLens/resolve`. Fill `command` for a selected lens. Useful for lazy test runs, navigation, etc.
+
+## Signature
+`(codeLens: CodeLens, token: CancellationToken) => CodeLens | Promise<CodeLens>`
+
+## Example
+```ts
+resolveCodeLens(lens) {
+  if (lens.data?.testId) {
+    lens.command = { title: 'Run Test', command: 'extension.runTest', arguments: [lens.data.testId] };
+  }
+  return lens;
+}
+```
+
+## Troubleshooting
+- Missing commands: verify command is contributed in the client extension.
+
+

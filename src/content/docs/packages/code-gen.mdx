@@ -1,0 +1,45 @@
+---
+title: "@volar/code-gen"
+description: Utilities for generating virtual code with stable source maps and range tracking.
+---
+
+### Overview
+`@volar/code-gen` helps you produce generated code strings (virtual files) while recording precise mappings back to the source. This is essential for accurate hovers, go-to-definition, and diagnostics in embedded-language scenarios.
+
+### Install
+
+```bash
+npm i @volar/code-gen
+```
+
+### Usage
+
+```ts
+import { CodeGen } from '@volar/code-gen';
+
+const cg = new CodeGen();
+cg.addText('function render(){ return ');
+cg.addMapping({
+  sourceRange: [12, 17], // source indices for `Hello`
+  generatedRange: [cg.getText().length, cg.getText().length + 7],
+  data: { capabilities: { references: true, definitions: true, rename: true } },
+});
+cg.addText('"Hello"');
+cg.addText('; }');
+
+const { text, mappings } = cg.generate();
+```
+
+### API summary
+- `new CodeGen()`
+- `addText(text)`, `addMapping({ sourceRange, generatedRange, data })`
+- `generate() => { text, mappings }`
+
+### Best practices
+- Keep mappings granular but not overly fragmented
+- Tag mapping `data` with capability flags to optimize downstream routing
+
+### Related
+- [@volar/source-map](/packages/source-map), [@volar/transforms](/packages/transforms)
+
+

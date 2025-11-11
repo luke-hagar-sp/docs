@@ -1,0 +1,41 @@
+---
+title: volar-service-emmet
+description: Integrate @vscode/emmet-helper into Volar for abbreviation expansion.
+---
+
+### What it does
+Provides Emmet abbreviation expansion and related completions in HTML/CSS-like contexts.
+
+### How it works
+Wraps `@vscode/emmet-helper` and exposes completion hooks through Volar’s service API.
+
+### Why use it
+- Speed up authoring of markup and styles with Emmet.
+
+### Install
+
+```bash
+npm i volar-service-emmet
+```
+
+### Usage
+
+```ts
+import { create as createEmmet } from 'volar-service-emmet';
+
+getServicePlugins() {
+  return [
+    createEmmet(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements: provideCompletionItems (Emmet expansions), resolveCompletionItem.
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/emmet`
+- Upstream helper: `https://github.com/microsoft/vscode/tree/main/extensions/emmet`
+
+

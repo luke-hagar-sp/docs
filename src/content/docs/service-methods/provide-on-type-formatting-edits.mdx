@@ -1,0 +1,24 @@
+---
+title: provideOnTypeFormattingEdits
+description: Provide edits when a specific character is typed.
+---
+
+## Overview
+Trigger small formatting edits (e.g., closing braces, semicolons) when the user types a character.
+
+## Signature
+`(document: TextDocument, position: Position, ch: string, options: FormattingOptions, token: CancellationToken) => TextEdit[] | Promise<TextEdit[]>`
+
+## Best practices
+- Keep edits minimal and predictable.
+- Avoid racing with other features; respect cancellation.
+
+## Example
+```ts
+provideOnTypeFormattingEdits(doc, pos, ch, options) {
+  if (ch !== '}') return [];
+  return maybeIndent(doc, pos, options);
+}
+```
+
+

@@ -1,0 +1,41 @@
+---
+title: provideCodeActions
+description: Provide quick fixes and refactors for a document range.
+---
+
+## Overview
+Called for `textDocument/codeAction`. Return quick fixes or refactors relevant to the given range and diagnostic context.
+
+## Signature
+`(document: TextDocument, range: Range, context: CodeActionContext, token: CancellationToken) => CodeAction[] | Promise<CodeAction[]>`
+
+## Best practices
+- Use diagnostics in `context` to suggest targeted fixes.
+- Group related edits; avoid overlapping/conflicting edits.
+- Prefer lazily computed `edit` in `resolveCodeAction` if expensive.
+
+## Example
+```ts
+provideCodeActions(document, range, context, token) {
+  const fixes: CodeAction[] = [];
+  for (const d of context.diagnostics) {
+    if (d.code === 'missing-attr') {
+      fixes.push({
+        title: 'Add missing attribute',
+        kind: 'quickfix',
+        diagnostics: [d],
+        data: { fix: 'add-attr', range: d.range },
+      });
+    }
+  }
+  return fixes;
+}
+```
+
+## Troubleshooting
+- No actions: ensure range intersects diagnostics or symbols of interest.
+- Conflicts: coalesce edits and ensure document versions match.
+
+## Related
+- [resolveCodeAction](/service-methods/resolve-code-action)
+

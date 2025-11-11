@@ -1,0 +1,26 @@
+---
+title: provideCodeLens
+description: Provide code lenses for a document (inline actionable commands).
+---
+
+## Overview
+Called for `textDocument/codeLens`. Return lenses with `range` and optional `command`. Use `resolveCodeLens` for expensive commands.
+
+## Signature
+`(document: TextDocument, token: CancellationToken) => CodeLens[] | Promise<CodeLens[]>`
+
+## Best practices
+- Minimize work; move command resolution to `resolveCodeLens`.
+- Use `data` for identifiers to resolve later.
+
+## Example
+```ts
+provideCodeLens(doc) {
+  const tests = findTests(doc);
+  return tests.map(t => ({ range: t.nameRange, data: { testId: t.id } }));
+}
+```
+
+## Related
+- [resolveCodeLens](/service-methods/resolve-code-lens)
+

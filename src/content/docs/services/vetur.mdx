@@ -1,0 +1,40 @@
+---
+title: volar-service-vetur
+description: Vetur compatibility features for Volar-based servers.
+---
+
+### What it does
+Provides Vetur-style features/compatibility layers (e.g. component data, tags/attributes sources, and related helpers) inside Volar.
+
+### How it works
+Implements compatibility shims and data sources to emulate or bridge Vetur capabilities via Volar service hooks.
+
+### Why use it
+- Smooth migration or coexistence with Vetur-powered workflows/tools.
+
+### Install
+
+```bash
+npm i volar-service-vetur
+```
+
+### Usage
+
+```ts
+import { create as createVetur } from 'volar-service-vetur';
+
+getServicePlugins() {
+  return [
+    createVetur(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements: provideCompletionItems/resolveCompletionItem (for tags/attrs), provideHover, provideDocumentSymbols, diagnostics (where applicable).
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/vetur`
+
+

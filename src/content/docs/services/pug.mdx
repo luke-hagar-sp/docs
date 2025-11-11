@@ -1,0 +1,40 @@
+---
+title: volar-service-pug
+description: Integrate Pug into Volar for template authoring.
+---
+
+### What it does
+Adds Pug template language features (diagnostics, completions, hovers, formatting, symbols) for Pug blocks and files.
+
+### How it works
+Provides a Pug-aware service that parses and maps Pug templates to HTML/AST behind Volar’s service interface, enabling common LSP hooks.
+
+### Why use it
+- First-class Pug authoring in frameworks that embed Pug templates.
+
+### Install
+
+```bash
+npm i volar-service-pug
+```
+
+### Usage
+
+```ts
+import { create as createPug } from 'volar-service-pug';
+
+getServicePlugins() {
+  return [
+    createPug(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements: provideCompletionItems/resolveCompletionItem, provideHover, provideDocumentSymbols, provideDocumentFormattingEdits/Range, provideFoldingRanges, provideSelectionRanges, diagnostics.
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/pug`
+
+

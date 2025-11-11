@@ -1,0 +1,41 @@
+---
+title: volar-service-typescript
+description: Integrate TypeScript features into Volar.
+---
+
+### What it does
+Provides TypeScript language features (completions, diagnostics, hovers, definitions, references, code actions/refactors, inlay hints, semantic tokens, formatting) for `script` blocks and TS/JS files in embedded projects.
+
+### How it works
+Bridges the TypeScript Language Service into Volar’s service runtime and handles embedded TS/JS via virtual documents and source maps.
+
+### Why use it
+- First-class TS/JS authoring in frameworks with embedded scripts.
+
+### Install
+
+```bash
+npm i volar-service-typescript
+```
+
+### Usage
+
+```ts
+import { create as createTs } from 'volar-service-typescript';
+
+getServicePlugins() {
+  return [
+    createTs(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements (via TS LS): provideCompletionItems/resolveCompletionItem, provideHover, provideSignatureHelp, provideDefinition, provideReferences, provideCallHierarchyItems/IncomingCalls/OutgoingCalls, provideCodeActions/resolveCodeAction, provideRenameEdits, provideDocumentSemanticTokens/Edits, provideInlayHints/resolveInlayHint, provideDocumentSymbols, provideDocumentFormattingEdits/Range/OnType, diagnostics, more TS-specific transforms.
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/typescript`
+- TypeScript LS: `https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API`
+
+

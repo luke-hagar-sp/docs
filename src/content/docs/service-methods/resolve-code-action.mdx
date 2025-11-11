@@ -1,0 +1,34 @@
+---
+title: resolveCodeAction
+description: Compute or finalize edits/commands for a selected code action.
+---
+
+## Overview
+Called for `codeAction/resolve`. Fill in edits and commands for a chosen action. Great for expensive or context-heavy edits.
+
+## Signature
+`(action: CodeAction, token: CancellationToken) => CodeAction | Promise<CodeAction>`
+
+## Best practices
+- Use `action.data` to carry identifiers from `provideCodeActions`.
+- Validate ranges against the latest snapshot; re-map if needed.
+- Respect cancellations to avoid UI jank.
+
+## Example
+```ts
+resolveCodeAction(action, token) {
+  if (action.data?.fix === 'add-attr') {
+    const edit = /* compute TextEdit[] */;
+    action.edit = { changes: { [action.data.uri]: edit } };
+  }
+  return action;
+}
+```
+
+## Troubleshooting
+- Edits not applied: ensure URIs and versions match client expectations.
+- Multi-file: use `WorkspaceEdit.changes` across files or `documentChanges`.
+
+## Related
+- [provideCodeActions](/service-methods/provide-code-actions)
+

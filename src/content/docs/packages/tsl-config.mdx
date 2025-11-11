@@ -1,0 +1,35 @@
+---
+title: "@volar/tsl-config"
+description: Shared TypeScript language configuration presets and helpers for Volar toolchains.
+---
+
+### Overview
+`@volar/tsl-config` centralizes TypeScript-related configuration commonly used by Volar. It helps align TS language service setup across packages and servers.
+
+### Install
+
+```bash
+npm i @volar/tsl-config
+```
+
+### Usage
+
+```ts
+import { createDefaultTsConfig } from '@volar/tsl-config';
+
+const tsConfig = createDefaultTsConfig({
+  // extend/override as needed
+});
+```
+
+### API summary
+- Presets for compiler options
+- Helpers to load/merge tsconfig.json
+
+### Notes
+- Intended for server authors; end users rarely need this directly
+
+### Related
+- [@volar/typescript](/packages/typescript), [@volar/typescript-language-service](/packages/typescript-language-service)
+
+

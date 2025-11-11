@@ -1,0 +1,23 @@
+---
+title: provideDocumentColors
+description: Provide color occurrences in the document.
+---
+
+## Overview
+Return `ColorInformation[]` for color literals/usages to power color decorators.
+
+## Signature
+`(document: TextDocument, token: CancellationToken) => ColorInformation[] | Promise<ColorInformation[]>`
+
+## Best practices
+- Map colors in embedded styles/templates as needed.
+- Deduplicate overlapping color ranges.
+
+## Example
+```ts
+provideDocumentColors(doc) {
+  return findColorInfos(doc);
+}
+```
+
+

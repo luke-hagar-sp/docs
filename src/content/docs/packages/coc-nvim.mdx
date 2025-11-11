@@ -1,0 +1,53 @@
+---
+title: "@volar/coc.nvim"
+description: coc.nvim client integration for Volar language servers in (Neo)Vim.
+---
+
+### Overview
+`@volar/coc.nvim` provides a ready-to-use coc.nvim client configuration for Volar-based language servers. It wires the Volar LSP server to coc.nvim so you get completions, hovers, diagnostics, refactors, rename, inlay hints, semantic tokens, and more in Vim/Neovim.
+
+### Install
+
+```bash
+npm i -D @volar/coc.nvim
+```
+
+Also ensure coc.nvim is installed in your editor.
+
+### Usage
+Add a language server entry to your `:CocConfig` (usually `~/.config/nvim/coc-settings.json`):
+
+```json
+{
+  "languageserver": {
+    "volar": {
+      "module": "@volar/coc.nvim",
+      "args": [],
+      "filetypes": ["html", "vue", "markdown", "json", "yaml", "javascript", "javascriptreact", "typescript", "typescriptreact"],
+      "initializationOptions": {
+        "getServicePlugins": true
+      }
+    }
+  }
+}
+```
+
+- Set `filetypes` to the languages your server supports.
+- Pass any project-specific initialization options as needed.
+
+### How it works
+- Exposes a coc.nvim-compatible client module that spawns a Volar LSP server
+- Bridges LSP requests/responses between coc.nvim and the server
+- Respects coc.nvim workspace and configuration facilities
+
+### API summary
+This package is consumed by coc.nvim through its “languageserver.module” entry. You typically don’t import it directly in application code.
+
+### Tips
+- For large repos, prefer workspaceFolders-aware setups and enable incremental features in your server configuration
+- Use `:CocCommand` to inspect logs when diagnosing issues
+
+### Related
+- [@volar/language-server](/packages/language-server), [@volar/kit](/packages/kit), [@volar/vscode](/packages/vscode)
+
+

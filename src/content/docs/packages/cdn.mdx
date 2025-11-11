@@ -1,0 +1,31 @@
+---
+title: "@volar/cdn"
+description: CDN-friendly builds and helpers for using Volar in the browser without bundling.
+---
+
+### Overview
+`@volar/cdn` helps load Volar pieces from a CDN (ESM) for quick demos and zero-build setups.
+
+### Install
+
+```bash
+npm i @volar/cdn
+```
+
+Or load directly from a CDN (e.g. jsDelivr):
+
+```html
+<script type="module">
+  import { createMonacoLanguageService } from 'https://cdn.jsdelivr.net/npm/@volar/monaco/+esm';
+  // ...
+</script>
+```
+
+### Usage
+- Combine with `@volar/monaco` and service plugins
+- Good for playgrounds, embedding editors in docs sites
+
+### Related
+- [@volar/jsdelivr](/packages/jsdelivr), [@volar/monaco](/packages/monaco), [@volar/preview](/packages/preview)
+
+

@@ -1,0 +1,41 @@
+---
+title: volar-service-markdown
+description: Integrate vscode-markdown-languageservice into Volar.
+---
+
+### What it does
+Provides Markdown features like hovers, links, symbols, folding/selection ranges, and formatting for `.md`/`.mdx` (where supported).
+
+### How it works
+Wraps `vscode-markdown-languageservice` to deliver LSP-style features for Markdown documents in Volar-based servers.
+
+### Why use it
+- Rich Markdown authoring inside multi-language workspaces or embedded contexts.
+
+### Install
+
+```bash
+npm i volar-service-markdown
+```
+
+### Usage
+
+```ts
+import { create as createMarkdown } from 'volar-service-markdown';
+
+getServicePlugins() {
+  return [
+    createMarkdown(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements (via Markdown LS): provideHover, provideDocumentSymbols, provideDocumentLinks, provideFoldingRanges, provideSelectionRanges, provideDocumentFormattingEdits/Range (where supported).
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/markdown`
+- Upstream LS: `https://github.com/microsoft/vscode`
+
+

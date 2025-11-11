@@ -1,0 +1,27 @@
+---
+title: "@volar/jsdelivr"
+description: Convenience for consuming Volar packages via jsDelivr ESM endpoints.
+---
+
+### Overview
+`@volar/jsdelivr` documents patterns and helpers for loading Volar libraries directly from jsDelivr.
+
+### Example
+
+```html
+<script type="module">
+  import { createMonacoLanguageService } from 'https://cdn.jsdelivr.net/npm/@volar/monaco/+esm';
+  import { create as createHtml } from 'https://cdn.jsdelivr.net/npm/volar-service-html/+esm';
+  // bootstrap monaco + volar...
+  // const ls = await createMonacoLanguageService({ getServicePlugins: () => [createHtml()] })
+</script>
+```
+
+### Notes
+- Use explicit versions for stability in production
+- Consider caching headers and integrity attributes where possible
+
+### Related
+- [@volar/cdn](/packages/cdn), [@volar/monaco](/packages/monaco), [@volar/preview](/packages/preview)
+
+

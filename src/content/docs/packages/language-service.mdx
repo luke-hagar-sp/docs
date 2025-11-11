@@ -1,0 +1,57 @@
+---
+title: "@volar/language-service"
+description: The service runtime that executes plugins (services) over core documents and routes feature requests.
+---
+
+### Overview
+`@volar/language-service` is the execution layer for Volar plugins (aka “services”). It takes documents and virtual files from `@volar/language-core` and runs feature providers (completion, hover, diagnostics, etc.) supplied by your services.
+
+Use this to:
+- Compose multiple services (HTML, CSS, TS, YAML, custom) into a single language-service
+- Orchestrate request routing, deduplication, and result merging
+
+### How it works
+- Accepts a project/document provider and a list of service plugins
+- Each plugin implements some subset of language features
+- The language service calls plugins, merges results, and returns LSP-like data structures
+
+### Install
+
+```bash
+npm i @volar/language-service
+```
+
+### Usage
+
+```ts
+import { createLanguageService } from '@volar/language-service';
+import { createLanguage } from '@volar/language-core';
+import { create as createHtml } from 'volar-service-html';
+import { create as createCss } from 'volar-service-css';
+import { create as createTs } from 'volar-service-typescript';
+
+const core = createLanguage();
+const ls = createLanguageService({
+  language: core,
+  getServicePlugins() {
+    return [createHtml(), createCss(), createTs()];
+  },
+});
+
+// Example: completions
+const completions = await ls.provideCompletionItems(uri, position);
+```
+
+### API summary
+- `createLanguageService({ language, getServicePlugins })`
+- Methods: `provideCompletionItems`, `provideHover`, `provideDiagnostics`, etc.
+- Result-merging utilities and cancellation handling
+
+### Notes
+- Keep plugin execution fast; prefer incremental caches keyed by document versions
+- Return partial results where supported
+
+### Related
+- [@volar/language-core](/packages/language-core), [@volar/language-server](/packages/language-server), [@volar/kit](/packages/kit)
+
+

@@ -1,0 +1,42 @@
+---
+title: volar-service-html
+description: Integrate vscode-html-languageservice into Volar.
+---
+
+### What it does
+Provides HTML language features (completions, hovers, validation, linked editing, formatting, symbols, folding/selection ranges) for templates and `.html` files.
+
+### How it works
+Wraps `vscode-html-languageservice` behind Volar’s Service Plugin interface to power LSP-like hooks for HTML and embedded HTML.
+
+### Why use it
+- HTML editor features for any Volar-based server.
+- Works across embedded templates and standalone HTML files.
+
+### Install
+
+```bash
+npm i volar-service-html
+```
+
+### Usage
+
+```ts
+import { create as createHtml } from 'volar-service-html';
+
+getServicePlugins() {
+  return [
+    createHtml(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements (via HTML LS): provideCompletionItems/resolveCompletionItem, provideHover, provideDocumentSymbols, provideDocumentLinks, provideLinkedEditingRanges, provideDocumentFormattingEdits/Range/OnType, provideFoldingRanges, provideSelectionRanges.
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/html`
+- Upstream LS: `https://github.com/microsoft/vscode-html-languageservice`
+
+

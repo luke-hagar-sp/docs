@@ -1,0 +1,45 @@
+---
+title: "@volar/monaco"
+description: Monaco Editor integration for running Volar in the browser.
+---
+
+### Overview
+`@volar/monaco` adapts the Volar language-service to Monaco Editor. Use this to run embedded-language tooling fully in the browser (docs sites, sandboxes, playgrounds).
+
+### Install
+
+```bash
+npm i @volar/monaco
+```
+
+### Usage
+
+```ts
+import * as monaco from 'monaco-editor';
+import { createMonacoLanguageService } from '@volar/monaco';
+import { create as createHtml } from 'volar-service-html';
+
+const model = monaco.editor.createModel('<div/>', 'html', monaco.Uri.parse('inmemory:///index.html'));
+
+const volar = await createMonacoLanguageService({
+  models: [model],
+  getServicePlugins: () => [createHtml()],
+});
+
+// wire to Monaco’s completion provider
+monaco.languages.registerCompletionItemProvider('html', {
+  provideCompletionItems: async (model, position) => {
+    const items = await volar.provideCompletionItems(model.uri.toString(), position);
+    return { suggestions: items?.items ?? [] };
+  },
+});
+```
+
+### Notes
+- Use in combination with `@volar/cdn` or bundler-friendly builds for browser environments.
+- URI schemes like `inmemory://` or `file://` must be consistent across Volar and Monaco.
+
+### Related
+- [@volar/preview](/packages/preview), [@volar/cdn](/packages/cdn), [@volar/jsdelivr](/packages/jsdelivr)
+
+

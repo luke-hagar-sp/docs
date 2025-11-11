@@ -1,0 +1,34 @@
+---
+title: "@volar/typescript-faster"
+description: Experimental performance-focused TypeScript integration helpers for Volar.
+---
+
+### Overview
+`@volar/typescript-faster` explores configurations and adapters to reduce latency of TS-powered features in large workspaces. Trade-offs may include reduced completeness under certain conditions.
+
+### Install
+
+```bash
+npm i @volar/typescript-faster typescript
+```
+
+### Usage
+
+```ts
+import { createFastTsProject } from '@volar/typescript-faster';
+const project = createFastTsProject({ tsconfigPath: './tsconfig.json' });
+```
+
+### Techniques
+- Aggressive caching of parsed source files
+- Skipping seldom-used TS services on keystroke
+- Debounced/batched updates
+
+### Notes
+- Consider for very large repos or constrained environments
+- Validate feature coverage for your use cases
+
+### Related
+- [@volar/typescript](/packages/typescript), [@volar/typescript-language-service](/packages/typescript-language-service)
+
+

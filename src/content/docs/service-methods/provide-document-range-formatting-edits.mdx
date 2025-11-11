@@ -1,0 +1,25 @@
+---
+title: provideDocumentRangeFormattingEdits
+description: Provide edits to format a selected document range.
+---
+
+## Overview
+Called for range formatting. Similar to full-document formatting but constrained to a specific range.
+
+## Signature
+`(document: TextDocument, range: Range, options: FormattingOptions, token: CancellationToken) => TextEdit[] | Promise<TextEdit[]>`
+
+## Best practices
+- Expand to syntactic boundaries to avoid partial AST breakage.
+- Respect user options and preserve surrounding whitespace.
+
+## Example
+```ts
+provideDocumentRangeFormattingEdits(doc, range, options) {
+  const text = doc.getText(range);
+  const formatted = format(text, options);
+  return [{ range, newText: formatted }];
+}
+```
+
+

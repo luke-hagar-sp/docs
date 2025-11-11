@@ -1,0 +1,35 @@
+---
+title: "@volar/transforms"
+description: Convert and combine results (ranges, edits, diagnostics) across source and virtual files.
+---
+
+### Overview
+`@volar/transforms` provides utilities to transform LSP-like results (completions, hovers, edits, diagnostics) between different coordinate spaces, typically source-to-generated or generated-to-source using source maps.
+
+### Install
+
+```bash
+npm i @volar/transforms
+```
+
+### Usage
+
+```ts
+import { transformLocations } from '@volar/transforms';
+
+const sourceLocations = transformLocations(generatedLocations, sourceMap, 'toSource');
+```
+
+### API summary
+- Location, Range, TextEdit transformers
+- Collections: arrays of locations/edits/diagnostics
+- Merge and dedupe helpers
+
+### Best practices
+- Always pair with accurate `@volar/source-map` mappings
+- Avoid double-transforming the same payload
+
+### Related
+- [@volar/source-map](/packages/source-map), [@volar/language-core](/packages/language-core)
+
+

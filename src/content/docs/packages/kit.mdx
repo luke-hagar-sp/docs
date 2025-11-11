@@ -1,0 +1,42 @@
+---
+title: "@volar/kit"
+description: Convenience utilities to bootstrap Volar language services and servers quickly.
+---
+
+### Overview
+`@volar/kit` streamlines common setup for language servers and services: file watching, project discovery, and creating a ready-to-use Volar stack. It’s ideal when you want to stand up a server rapidly and iterate.
+
+### Install
+
+```bash
+npm i @volar/kit
+```
+
+### Usage
+
+```ts
+import { createNodeServer } from '@volar/kit';
+import { create as createHtml } from 'volar-service-html';
+
+const server = await createNodeServer({
+  getServicePlugins() {
+    return [createHtml()];
+  },
+});
+
+await server.listen(); // starts LSP over stdio
+```
+
+### Features
+- Turnkey Node-based LSP bootstrap
+- Reasonable defaults for workspace and projects
+- Hooks to inject custom services and configuration
+
+### When to use
+- Prototyping a new language server
+- Internal tools where you don’t need bespoke project graph handling
+
+### Related
+- If you need maximum control, use [@volar/language-server](/packages/language-server) directly.
+
+

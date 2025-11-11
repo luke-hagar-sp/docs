@@ -1,0 +1,22 @@
+---
+title: resolveInlayHint
+description: Enrich an inlay hint with additional details lazily.
+---
+
+## Overview
+Called to resolve properties on a specific inlay hint, e.g., `tooltip` or `textEdits`.
+
+## Signature
+`(hint: InlayHint, token: CancellationToken) => InlayHint | Promise<InlayHint>`
+
+## Example
+```ts
+resolveInlayHint(hint) {
+  if (hint.data?.typeId) {
+    hint.tooltip = getTypeDocs(hint.data.typeId);
+  }
+  return hint;
+}
+```
+
+

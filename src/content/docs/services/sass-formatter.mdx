@@ -1,0 +1,40 @@
+---
+title: volar-service-sass-formatter
+description: Integrate sass-formatter for SCSS/Sass formatting.
+---
+
+### What it does
+Adds formatting for SCSS/Sass sources via `sass-formatter`.
+
+### How it works
+Wires `sass-formatter` through Volar’s formatting hooks.
+
+### Why use it
+- Consistent Sass/SCSS formatting aligned with your style guidelines.
+
+### Install
+
+```bash
+npm i volar-service-sass-formatter
+```
+
+### Usage
+
+```ts
+import { create as createSassFormatter } from 'volar-service-sass-formatter';
+
+getServicePlugins() {
+  return [
+    createSassFormatter(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements: provideDocumentFormattingEdits, provideDocumentRangeFormattingEdits.
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/sass-formatter`
+
+

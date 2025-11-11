@@ -1,0 +1,20 @@
+---
+title: provideLinkedEditingRanges
+description: Provide linked ranges for simultaneous editing (e.g., paired tags).
+---
+
+## Overview
+Return ranges that should be edited together while the user types.
+
+## Signature
+`(document: TextDocument, position: Position, token: CancellationToken) => LinkedEditingRanges | Promise<LinkedEditingRanges>`
+
+## Example
+```ts
+provideLinkedEditingRanges(doc, pos) {
+  const pair = findPairedTagRanges(doc, pos);
+  return pair ? { ranges: [pair.open, pair.close] } : undefined;
+}
+```
+
+

@@ -1,0 +1,40 @@
+---
+title: "@volar/snapshot-document"
+description: Immutable document snapshots for consistent reads during analysis.
+---
+
+### Overview
+`@volar/snapshot-document` provides read-only snapshots of a text document at a specific version. Snapshots ensure stable reads while the user edits, enabling safe parsing, mapping, and feature computation.
+
+### Install
+
+```bash
+npm i @volar/snapshot-document
+```
+
+### Usage
+
+```ts
+import { createSnapshotDocument } from '@volar/snapshot-document';
+
+const snap = createSnapshotDocument('file:///index.html', '<div>Hello</div>');
+snap.getText(); // stable content
+```
+
+### How it works
+- Captures the text and version at a point in time
+- Exposes read methods that do not change while analysis runs
+- New edits produce new snapshots; consumers can compare versions
+
+### API summary
+- `createSnapshotDocument(uri, text, version?) => SnapshotDocument`
+- Methods: `getText()`, `offsetAt(position)`, `positionAt(offset)`, `version`, `uri`
+
+### Best practices
+- Use snapshots to drive all feature providers
+- Cache snapshot-derived structures keyed by `version`
+
+### Related
+- [@volar/source-map](/packages/source-map), [@volar/language-core](/packages/language-core)
+
+

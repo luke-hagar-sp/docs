@@ -1,0 +1,44 @@
+---
+title: "@volar/source-map"
+description: Precise mappings between source and generated virtual code for embedded languages.
+---
+
+### Overview
+`@volar/source-map` represents range/position relationships between original source files and generated virtual files. Accurate source maps are critical for definition/rename, hovers, diagnostics, and more across embedded languages.
+
+### Install
+
+```bash
+npm i @volar/source-map
+```
+
+### Usage
+
+```ts
+import { createSourceMap } from '@volar/source-map';
+
+const map = createSourceMap({
+  sourceDocument: snapshot,
+  generatedDocumentText: code,
+});
+
+map.add({
+  sourceRange: [start, end],
+  generatedRange: [gStart, gEnd],
+  data: { capabilities: { definitions: true, references: true } },
+});
+```
+
+### API summary
+- `createSourceMap({ sourceDocument, generatedDocumentText })`
+- `add({ sourceRange, generatedRange, data? })`
+- Query helpers: find generated ranges from source and vice versa
+
+### Best practices
+- Keep mapping segments minimal but comprehensive
+- Attach capability flags in `data` to optimize downstream routing
+
+### Related
+- [@volar/code-gen](/packages/code-gen), [@volar/snapshot-document](/packages/snapshot-document), [@volar/transforms](/packages/transforms)
+
+

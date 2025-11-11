@@ -1,0 +1,40 @@
+---
+title: volar-service-pug-beautify
+description: Integrate pug-beautify into Volar for formatting.
+---
+
+### What it does
+Adds Pug code formatting via `pug-beautify`.
+
+### How it works
+Wires `pug-beautify` as a Volar formatting provider through the service interface.
+
+### Why use it
+- Consistent and configurable Pug formatting inside your Volar-based server.
+
+### Install
+
+```bash
+npm i volar-service-pug-beautify
+```
+
+### Usage
+
+```ts
+import { create as createPugBeautify } from 'volar-service-pug-beautify';
+
+getServicePlugins() {
+  return [
+    createPugBeautify(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements: provideDocumentFormattingEdits, provideDocumentRangeFormattingEdits.
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/pug-beautify`
+
+

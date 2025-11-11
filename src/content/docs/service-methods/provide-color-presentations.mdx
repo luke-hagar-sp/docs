@@ -1,0 +1,22 @@
+---
+title: provideColorPresentations
+description: Provide color formatting options for a color at a range.
+---
+
+## Overview
+Given a color and the range where it appears, return alternative presentations (e.g., hex, rgb, named).
+
+## Signature
+`(color: Color, document: TextDocument, range: Range, token: CancellationToken) => ColorPresentation[] | Promise<ColorPresentation[]>`
+
+## Example
+```ts
+provideColorPresentations(color, doc, range) {
+  return [
+    { label: toHex(color) },
+    { label: toRgb(color) },
+  ];
+}
+```
+
+

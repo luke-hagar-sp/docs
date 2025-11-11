@@ -1,0 +1,40 @@
+---
+title: "@volar/typescript-language-service"
+description: Helpers to expose the TypeScript Language Service through Volar’s service API.
+---
+
+### Overview
+`@volar/typescript-language-service` focuses on adapting the raw TypeScript Language Service to Volar’s service/plugin interface. It provides scaffolding to translate TS LS requests/responses into LSP-like features used by editors.
+
+### Install
+
+```bash
+npm i @volar/typescript-language-service typescript
+```
+
+### Usage
+
+```ts
+import { createTsLanguageServiceAdapter } from '@volar/typescript-language-service';
+import * as ts from 'typescript';
+
+const adapter = createTsLanguageServiceAdapter({ ts, tsconfigPath: './tsconfig.json' });
+// Use it within a Volar service plugin to provide TS-based features
+```
+
+### How it works
+- Creates a TS LS instance and maps its outputs (edits, locations, etc.) to Volar feature methods
+- Bridges virtual files and source maps so TS results align with original sources
+
+### API summary
+- Builders/adapters for TS LS
+- Converters for TS result types to LSP-like structures
+
+### Best practices
+- Align your document lifecycle with TS project updates to avoid stale symbols
+- Cache symbol and semantic data per snapshot version
+
+### Related
+- [@volar/typescript](/packages/typescript), [volar-service-typescript](/services/typescript)
+
+

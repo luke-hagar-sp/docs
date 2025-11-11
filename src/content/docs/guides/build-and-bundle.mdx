@@ -1,0 +1,262 @@
+---
+title: "Build and Bundle for Volar LSP (Server, Client, Web)"
+description: A practical, fast, and robust build system for Volar-based LSPs across Node (server), VS Code extension (client), and web/Monaco targets.
+---
+
+> This guide captures a recommended toolchain and settings for building a Volar-powered LSP that is fast, modern, and reliable across environments. It aligns with the VS Code extension runtime and the LSP stack.
+>
+> References:
+> - VS Code API docs: https://code.visualstudio.com/api
+> - vscode-languageserver-node: https://github.com/microsoft/vscode-languageserver-node
+
+## Goals
+
+- Very fast builds and rebuilds (esbuild-based)
+- Works with complex monorepos and bleeding-edge TS/JS
+- Emits exactly what VS Code expects for extensions
+- Produces optional web/Monaco bundles for demos/playgrounds
+
+## Recommended stack
+
+- Package manager: pnpm workspaces
+- Orchestrator: Turborepo (or Nx) for caching/parallelism
+- Builder: tsup (esbuild) for server and VS Code extension
+- Type checking: `tsc --build` with Project References (separate from bundling)
+- Packaging: `@vscode/vsce`
+- VS Code tests: `@vscode/test-electron`
+- Optional web builds: esbuild/tsup or Vite (for `@volar/monaco` playgrounds)
+
+## Monorepo layout
+
+```
+packages/
+  language-core/            # shared libs (optional)
+  language-service/         # optional service composition (optional)
+  language-server/          # LSP server (Node)
+  vscode-extension/         # VS Code client (extension)
+  web-playground/           # optional Monaco web demos
+```
+
+`pnpm-workspace.yaml`
+```yaml
+packages:
+  - "packages/*"
+```
+
+## TypeScript setup
+
+- TS 5.x, strict mode on
+- `moduleResolution: "node16"` (or `"bundler"` if preferred)
+- Project References to speed up type-checking across packages
+
+Root `tsconfig.base.json`:
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "moduleResolution": "node16",
+    "resolveJsonModule": true,
+    "skipLibCheck": true
+  }
+}
+```
+
+## Server (Node LSP) build
+
+- Output format: CommonJS
+- Platform: node
+- Target: match VS Code’s Node runtime for your `engines.vscode` (e.g. `node20`)
+- Externalize: `vscode`, `typescript` (and other peers you don’t want bundled)
+
+`packages/language-server/tsup.config.ts`
+```ts
+import { defineConfig } from 'tsup';
+
+export default defineConfig({
+  entry: ['src/node.ts'],        // your LSP server entry
+  format: ['cjs'],
+  platform: 'node',
+  target: 'node20',              // align to VS Code engine’s Node
+  sourcemap: true,
+  dts: true,
+  splitting: false,
+  minify: false,
+  clean: true,
+  external: ['vscode', 'typescript'],
+});
+```
+
+`packages/language-server/package.json`
+```jsonc
+{
+  "name": "@your-scope/language-server",
+  "main": "./dist/node.cjs",
+  "bin": {
+    "your-language-server": "./bin/cli.js"
+  },
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc -b"
+  },
+  "dependencies": {
+    "@volar/language-server": "latest",
+    "@volar/language-core": "latest",
+    "@volar/language-service": "latest"
+  }
+}
+```
+
+CLI shim `bin/cli.js`
+```js
+#!/usr/bin/env node
+require('../dist/node.cjs');
+```
+
+### Server gotchas
+- Always emit CJS for Node entry consumed by the extension
+- Keep `vscode` external (provided by VS Code on the client side)
+- Ensure `node` target matches the VS Code engine you support
+- Avoid dynamic `require` paths that bundlers can’t analyze
+
+## VS Code extension (client) build
+
+- Output format: CommonJS
+- Platform: node
+- Externalize: `vscode`
+- Package with `@vscode/vsce`
+- Test with `@vscode/test-electron`
+
+`packages/vscode-extension/tsup.config.ts`
+```ts
+import { defineConfig } from 'tsup';
+
+export default defineConfig({
+  entry: ['src/extension.ts'],
+  format: ['cjs'],
+  platform: 'node',
+  target: 'node20',
+  sourcemap: true,
+  dts: false,
+  clean: true,
+  external: ['vscode'],
+});
+```
+
+`packages/vscode-extension/package.json`
+```jsonc
+{
+  "name": "your-language-extension",
+  "displayName": "Your Language Extension",
+  "version": "0.0.1",
+  "engines": { "vscode": "^1.90.0" },
+  "activationEvents": ["onLanguage:yourlang"],
+  "main": "./dist/extension.cjs",
+  "scripts": {
+    "build": "tsup",
+    "package": "vsce package",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3",
+    "@vscode/test-electron": "^2"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9",
+    "@volar/vscode": "latest"
+  }
+}
+```
+
+`.vscodeignore` (keep bundles lean)
+```
+**/node_modules/**
+!node_modules/vscode-languageclient/**
+!dist/**
+src/**
+tsconfig*.json
+tsup.config.ts
+```
+
+### Client gotchas
+- `vscode` must be external; don’t bundle it
+- Use CommonJS output for the extension entry
+- Align Node target with the VS Code engine
+- Use absolute file URIs and consistent URI schemes when talking to your server
+
+## Optional: Web/Monaco build
+
+- Output: ESM for browsers
+- Platform: browser, `target: es2020` (or newer as needed)
+- Externalize/peer: `monaco-editor`; load via CDN or top-level bundler
+
+Minimal tsup config:
+```ts
+import { defineConfig } from 'tsup';
+
+export default defineConfig({
+  entry: ['src/web.ts'],
+  format: ['esm'],
+  platform: 'browser',
+  target: 'es2020',
+  splitting: true,
+  sourcemap: true,
+  dts: false,
+  external: ['monaco-editor'],
+  clean: true,
+});
+```
+
+### Web gotchas
+- Don’t ship Node builtins/polyfills unless strictly required
+- Use `inmemory://` (or similar) URIs consistently across Monaco and Volar
+- Keep bundles code-split for faster demo loads
+
+## Monorepo workflows
+
+- Use Turborepo for incremental caching and parallelism:
+  - `build`: runs `tsup` in each package
+  - `typecheck`: runs `tsc -b` with references
+  - `test`: runs unit/integration tests
+- Use Changesets for versioning/publishing
+
+`turbo.json`
+```json
+{
+  "pipeline": {
+    "build": { "dependsOn": ["^build"], "outputs": ["dist/**"] },
+    "typecheck": { "dependsOn": ["^typecheck"] },
+    "test": { "dependsOn": ["build"] }
+  }
+}
+```
+
+## Troubleshooting
+
+- Extension fails to activate:
+  - Check `main` path and `activationEvents` in extension `package.json`
+  - Verify `vscode` is external and not bundled
+  - Confirm Node target matches the VS Code engine
+- Language server doesn’t start or exits:
+  - Inspect output channel “Your Language Server”
+  - Verify the extension resolves the server module path correctly
+  - Run server directly with `node` to catch runtime errors
+- Missing typings or path aliases break the build:
+  - Ensure path aliases have a tsup/esbuild “tsconfig paths” plugin or use relative imports
+  - Use Project References to avoid circular deps
+- Debugging:
+  - Use `--inspect` on the server process and “Attach to Node” in VS Code
+  - Enable source maps in bundler and test that breakpoints bind
+
+## Why this toolchain
+
+- `tsup`/esbuild gives the fastest practical builds with excellent TS/JS support
+- Clear separation of concerns: bundling vs type-checking (`tsc -b`)
+- Targets exactly what VS Code expects for extensions (CJS, Node platform)
+- Scales to large monorepos with Turborepo caching and Project References
+
+> Further reading:
+> - VS Code API: https://code.visualstudio.com/api
+> - `vscode-languageserver-node`: https://github.com/microsoft/vscode-languageserver-node
+
+

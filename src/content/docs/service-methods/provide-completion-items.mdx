@@ -1,0 +1,44 @@
+---
+title: provideCompletionItems
+description: Provide completion items at a given position in a document.
+---
+
+## Overview
+Called for `textDocument/completion`. Return completion items for the given document and position. Prefer fast, incremental results with optional follow-up resolution.
+
+## Signature
+`(document: TextDocument, position: Position, token: CancellationToken) => CompletionList | Promise<CompletionList>`
+
+- Supports returning either an array of `CompletionItem` or a `CompletionList` with `isIncomplete`.
+- Use `token` to bail early when the user continues typing.
+
+## Inputs and outputs
+- Position should be mapped to your language’s virtual document if you use embedded languages.
+- Mark `isIncomplete: true` to hint the client to re-request as the user types.
+
+## Best practices
+- Cache context (e.g., symbol index) per document snapshot/version.
+- Avoid heavy computation; push expensive data to `resolveCompletionItem`.
+- Respect `CancellationToken`.
+
+## Example
+```ts
+provideCompletionItems(document, position, token) {
+  if (token.isCancellationRequested) return;
+  return {
+    isIncomplete: true,
+    items: [
+      { label: 'Hello', kind: 14 /* Text */ },
+      { label: 'World', kind: 14 /* Text */ },
+    ],
+  };
+}
+```
+
+## Troubleshooting
+- Empty list: verify position mapping from source to virtual docs.
+- Slow typing: add `isIncomplete`, reduce computation per keystroke.
+
+## Related
+- [resolveCompletionItem](/service-methods/resolve-completion-item)
+

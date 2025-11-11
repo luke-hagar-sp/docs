@@ -1,0 +1,41 @@
+---
+title: volar-service-eslint
+description: Integrate ESLint diagnostics into Volar.
+---
+
+### What it does
+Runs ESLint over relevant documents and surfaces diagnostics and quick fixes via Volar.
+
+### How it works
+Executes ESLint through the service and maps results to LSP diagnostics and code actions where possible.
+
+### Why use it
+- Keep code quality feedback in the same pipeline as language features.
+
+### Install
+
+```bash
+npm i volar-service-eslint
+```
+
+### Usage
+
+```ts
+import { create as createEslint } from 'volar-service-eslint';
+
+getServicePlugins() {
+  return [
+    createEslint(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements: diagnostics, provideCodeActions/resolveCodeAction (for applicable fixes).
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/eslint`
+- ESLint: `https://eslint.org/`
+
+

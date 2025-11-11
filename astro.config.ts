@@ -33,25 +33,31 @@ export default defineConfig({
       },
       sidebar: [
         {
+          label: "About",
+          autogenerate: { directory: "about" },
+        },
+        {
           label: "Core Concepts",
-          items: [
-            // Each item here is one entry in the navigation menu.
-            { label: "Why Volar?", link: "/core-concepts/why-volar" },
-            { label: "Embedded Languages", link: "/core-concepts/embedded-languages" },
-            { label: "Volar Labs", link: "/core-concepts/volar-labs" },
-          ],
-          // TODO: Use `autogenerate` once it allows you to order the sidebar
+          autogenerate: { directory: "core-concepts" },
         },
         {
-          label: "Guides",
-          items: [
-            { label: "Your First Volar Language Server", link: "/guides/first-server" },
-            { label: "File Structure", link: "/guides/file-structure" },
-          ],
+          label: "Service Methods",
+          autogenerate: { directory: "service-methods" },
+          collapsed: true,
         },
         {
-          label: "Reference",
-          autogenerate: { directory: "reference" },
+          label: "Packages",
+          autogenerate: { directory: "packages" },
+          collapsed: true,
+        },
+        {
+          label: "Services",
+          autogenerate: { directory: "services" },
+          collapsed: true,
+        },
+        {
+          label: "Tools",
+          autogenerate: { directory: "tools" },
         },
       ],
     }),

@@ -1,0 +1,25 @@
+---
+title: provideDocumentSemanticTokens
+description: Provide semantic tokens for syntax coloring.
+---
+
+## Overview
+Return semantic tokens for the entire document to enable semantic highlighting.
+
+## Signature
+`(document: TextDocument, token: CancellationToken) => SemanticTokens | Promise<SemanticTokens>`
+
+## Best practices
+- Use legend consistent with the client.
+- Incremental updates should be supported via the edits variant.
+
+## Example
+```ts
+provideDocumentSemanticTokens(doc) {
+  const builder = createTokenBuilder();
+  collectTokens(doc, builder);
+  return builder.build();
+}
+```
+
+

@@ -1,0 +1,19 @@
+---
+title: provideFoldingRanges
+description: Provide folding ranges for the document.
+---
+
+## Overview
+Return logical folding regions (blocks, headers, sections) to improve code navigation.
+
+## Signature
+`(document: TextDocument, context: FoldingContext, token: CancellationToken) => FoldingRange[] | Promise<FoldingRange[]>`
+
+## Example
+```ts
+provideFoldingRanges(doc) {
+  return computeFolds(doc);
+}
+```
+
+

@@ -1,0 +1,38 @@
+---
+title: "@volar/test-utils"
+description: Helpers for unit/integration testing of Volar plugins, transforms, and services.
+---
+
+### Overview
+`@volar/test-utils` provides utilities to construct mock documents, virtual files, and minimal language services so you can test plugins and transforms without spinning up a full LSP server.
+
+### Install
+
+```bash
+npm i -D @volar/test-utils
+```
+
+### Usage
+
+```ts
+import { createTestLanguageService, createTestDocument } from '@volar/test-utils';
+
+const doc = createTestDocument('file:///index.html', '<div/>)');
+const ls = createTestLanguageService({ getServicePlugins: () => [createHtml()] });
+
+const diags = await ls.provideDiagnostics(doc.uri);
+expect(diags.length).toBeGreaterThan(0);
+```
+
+### API summary
+- Builders for documents, projects, and language services
+- Assertions and helpers for common feature scenarios
+
+### Tips
+- Prefer small, focused fixtures per test
+- Snapshot test results that are stable (e.g. range/position sets)
+
+### Related
+- [@volar/language-service](/packages/language-service), [@volar/transforms](/packages/transforms)
+
+

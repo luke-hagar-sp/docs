@@ -1,0 +1,40 @@
+---
+title: volar-service-prettyhtml
+description: Integrate prettyhtml as a formatter for HTML-like content.
+---
+
+### What it does
+Provides HTML formatting via `prettyhtml`.
+
+### How it works
+Calls `prettyhtml` under Volar’s formatting hooks for HTML/templating contexts.
+
+### Why use it
+- Opinionated HTML formatting alternative to Prettier where desired.
+
+### Install
+
+```bash
+npm i volar-service-prettyhtml
+```
+
+### Usage
+
+```ts
+import { create as createPrettyhtml } from 'volar-service-prettyhtml';
+
+getServicePlugins() {
+  return [
+    createPrettyhtml(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements: provideDocumentFormattingEdits, provideDocumentRangeFormattingEdits.
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/prettyhtml`
+
+

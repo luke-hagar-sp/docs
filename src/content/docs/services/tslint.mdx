@@ -1,0 +1,41 @@
+---
+title: volar-service-tslint
+description: Integrate TSLint diagnostics into Volar (legacy).
+---
+
+### What it does
+Surfaces TSLint diagnostics and quick fixes where applicable.
+
+### How it works
+Invokes TSLint via the service and maps results to LSP diagnostics/actions.
+
+### Why use it
+- Only for legacy codebases still using TSLint (TSLint is deprecated).
+
+### Install
+
+```bash
+npm i volar-service-tslint
+```
+
+### Usage
+
+```ts
+import { create as createTslint } from 'volar-service-tslint';
+
+getServicePlugins() {
+  return [
+    createTslint(),
+  ];
+}
+```
+
+### API
+- Export: `create(options?) => ServicePlugin`
+- Implements: diagnostics, provideCodeActions/resolveCodeAction (where applicable).
+
+### Links
+- Source: `https://github.com/volarjs/services/tree/master/packages/tslint`
+- TSLint: `https://github.com/palantir/tslint` (deprecated)
+
+

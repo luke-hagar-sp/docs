@@ -1,0 +1,19 @@
+---
+title: provideSelectionRanges
+description: Provide selection ranges that expand semantically from positions.
+---
+
+## Overview
+Return a hierarchy of ranges that the editor can use to expand/shrink selection (e.g., identifier → call → block).
+
+## Signature
+`(document: TextDocument, positions: Position[], token: CancellationToken) => SelectionRange[] | Promise<SelectionRange[]>`
+
+## Example
+```ts
+provideSelectionRanges(doc, positions) {
+  return positions.map(p => computeSelectionPyramid(doc, p));
+}
+```
+
+

@@ -1,0 +1,45 @@
+---
+title: "@volar/language-hub"
+description: Compose and coordinate multiple Volar language services across files, projects, and workspaces.
+---
+
+### Overview
+`@volar/language-hub` is a high-level coordinator that helps you compose multiple language services and route requests across complex project structures. It’s useful for monorepos, multi-root workspaces, and tools that stitch together several embedded-language stacks.
+
+### Install
+
+```bash
+npm i @volar/language-hub
+```
+
+### Usage
+
+```ts
+import { createLanguageHub } from '@volar/language-hub';
+import { createLanguageService } from '@volar/language-service';
+
+const htmlLs = createLanguageService({...});
+const tsLs = createLanguageService({...});
+
+const hub = createLanguageHub([htmlLs, tsLs]);
+
+const hover = await hub.provideHover(uri, position);
+```
+
+### How it works
+- Maintains a registry of child language services
+- Routes feature requests based on file types, virtual file ownership, or custom rules
+- Merges and deduplicates results where appropriate
+
+### API summary
+- `createLanguageHub(services: LanguageService[])`
+- Forwards: `provide*` feature methods with result merging
+
+### Notes
+- Keep service ownership rules simple; prefer single-owner per virtual file to reduce duplication
+- Use for orchestration; keep heavy lifting inside individual services
+
+### Related
+- [@volar/language-service](/packages/language-service), [@volar/language-server](/packages/language-server)
+
+

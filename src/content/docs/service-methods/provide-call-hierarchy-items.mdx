@@ -1,0 +1,20 @@
+---
+title: provideCallHierarchyItems
+description: Provide call hierarchy roots (symbols) at a position.
+---
+
+## Overview
+Return one or more `CallHierarchyItem` entries to explore incoming/outgoing calls.
+
+## Signature
+`(document: TextDocument, position: Position, token: CancellationToken) => CallHierarchyItem[] | Promise<CallHierarchyItem[]>`
+
+## Example
+```ts
+provideCallHierarchyItems(doc, pos) {
+  const symbol = findCallable(doc, pos);
+  return symbol ? [toCallHierarchyItem(symbol)] : [];
+}
+```
+
+

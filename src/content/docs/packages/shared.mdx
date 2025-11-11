@@ -1,0 +1,35 @@
+---
+title: "@volar/shared"
+description: Common types, utilities, and constants used across Volar packages.
+---
+
+### Overview
+`@volar/shared` contains reusable primitives (types, guards, small helpers) shared by multiple packages. It avoids duplicating small utilities across repos.
+
+### Install
+
+```bash
+npm i @volar/shared
+```
+
+### Contents
+- Type guards and small data structures
+- URI/path helpers, normalization routines
+- Constants used across services and servers
+
+### Usage
+
+```ts
+import { isNotNull, toUri } from '@volar/shared';
+
+const uri = toUri('/workspace/file.ts');
+items.filter(isNotNull);
+```
+
+### Notes
+- Keep `shared` focused on small, stable utilities to prevent dependency bloat
+
+### Related
+- [@volar/language-core](/packages/language-core), [@volar/transforms](/packages/transforms)
+
+

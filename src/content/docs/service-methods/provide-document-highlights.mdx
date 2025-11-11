@@ -1,0 +1,26 @@
+---
+title: provideDocumentHighlights
+description: Highlight occurrences of a symbol in the current document.
+---
+
+## Overview
+Called for `textDocument/documentHighlight`. Return ranges that should be highlighted for the symbol at position.
+
+## Signature
+`(document: TextDocument, position: Position, token: CancellationToken) => DocumentHighlight[] | Promise<DocumentHighlight[]>`
+
+## Best practices
+- Distinguish read vs write highlights if known.
+- Keep results scoped to current file; cross-file is not expected.
+
+## Example
+```ts
+provideDocumentHighlights(doc, pos) {
+  const occurrences = findOccurrences(doc, pos);
+  return occurrences.map(r => ({ range: r, kind: 1 /* Read */ }));
+}
+```
+
+## Troubleshooting
+- Flicker: ensure stable ordering and ranges across keystrokes.
+

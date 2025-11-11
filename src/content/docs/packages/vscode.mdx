@@ -1,0 +1,45 @@
+---
+title: "@volar/vscode"
+description: VS Code extension integration for Volar language servers.
+---
+
+### Overview
+`@volar/vscode` contains the VS Code-side glue for running Volar-based language servers and exposing features in the editor. It wires activation, client configuration, commands, and capability registration.
+
+### Install
+
+```bash
+npm i -D @volar/vscode
+```
+
+Typically consumed inside a VS Code extension, not by end-user projects.
+
+### Usage
+
+```ts
+// extension.ts
+import { activateVolarExtension } from '@volar/vscode';
+
+export async function activate(context: import('vscode').ExtensionContext) {
+  await activateVolarExtension(context, {
+    serverModule: require.resolve('@volar/language-server/node'),
+    serverOptions: { /* transport, debug opts */ },
+    clientOptions: { documentSelector: [{ language: 'vue' }, { language: 'html' }] },
+    getServicePlugins() { return []; },
+  });
+}
+```
+
+### How it works
+- Starts a Language Client connected to your server
+- Registers standard LSP features and custom commands
+- Manages workspace folders and configuration watch
+
+### Best practices
+- Keep activation lightweight; lazy-load heavy pieces
+- Use `documentSelector` precisely to avoid unnecessary activation
+
+### Related
+- [@volar/language-server](/packages/language-server), [@volar/kit](/packages/kit)
+
+

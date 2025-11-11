@@ -1,0 +1,28 @@
+---
+title: provideReferences
+description: Provide references to the symbol at a position.
+---
+
+## Overview
+Called for `textDocument/references`. Return all read/write locations of a symbol.
+
+## Signature
+`(document: TextDocument, position: Position, context: ReferenceContext, token: CancellationToken) => Location[] | Promise<Location[]>`
+
+## Best practices
+- Honor `context.includeDeclaration`.
+- Map through source maps; dedupe results across virtual/source files.
+- Batch I/O; avoid per-file scans where possible.
+
+## Example
+```ts
+provideReferences(document, position, ctx) {
+  const refs = findRefs(document, position, { includeDecl: ctx.includeDeclaration });
+  return dedupeLocations(refs);
+}
+```
+
+## Troubleshooting
+- Missing references: ensure index includes embedded regions.
+- Too many: scope to project/workspace boundaries intentionally.
+
